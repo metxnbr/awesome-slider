@@ -66,15 +66,16 @@ function AwesomeSlider(images, container, options) {
   this.container = container;
   this.height = this.container.clientWidth / this.options.ratio;
 
-  this.eleHelper = new Ele();
-  this.animateHelper = animate;
-
   this.eleCollections = {};
 
   this.intervalId = undefined;
 
   this.init();
 }
+
+AwesomeSlider.prototype.eleHelper = new Ele();
+
+AwesomeSlider.prototype.animateHelper = animate;
 
 AwesomeSlider.prototype.smoothImages = function() {
   if (this.realLen <= 1) {
@@ -95,12 +96,27 @@ AwesomeSlider.prototype.play = function(direction) {
 
   var list = this.eleCollections.list;
   var cur = this.current;
+
+  // change
   if (direction === "next") {
     this.current += 1;
   }
 
   if (direction === "previous") {
     this.current -= 1;
+  }
+
+  // reset
+  if (direction === "next") {
+    if (context.current > context.realLen) {
+      context.current = 1;
+    }
+  }
+
+  if (direction === "previous") {
+    if (context.current < 1) {
+      context.current = context.realLen;
+    }
   }
 
   this.animateHelper({
@@ -120,18 +136,6 @@ AwesomeSlider.prototype.play = function(direction) {
 
       left = parseInt(left * 100);
       list.style.left = "-" + left + "%";
-
-      if (direction === "next") {
-        if (context.current === context.realLen + 1) {
-          context.current = 1;
-        }
-      }
-
-      if (direction === "previous") {
-        if (context.current === 0) {
-          context.current = context.realLen;
-        }
-      }
     },
     duration: this.options.duration
   });
@@ -198,7 +202,7 @@ AwesomeSlider.prototype.createListWrap = function() {
   ele.style.overflow = "hidden";
   ele.style.height = this.height + "px";
 
-  if (this.options.autoplay) {
+  if (this.options.autoplay && this.checkPlayIsDisabled()) {
     ele.addEventListener(
       "mouseover",
       function() {
