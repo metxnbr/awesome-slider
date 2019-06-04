@@ -1,0 +1,29 @@
+ul,li {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.container {
+  width: 450px;
+  height: 1000px;
+  margin: 0 auto;
+  background-color: #ddd;
+}
+
+.list {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: pink;
+  font-size: 0;
+}
+
+.item {
+  display: inline-block;
+  height: 100%;
+  font-size: 30px;
+  color: #fff;
+  text-align: center;
+  background-color: #ddd;
+}
+

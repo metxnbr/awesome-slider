@@ -1,0 +1,17 @@
+{
+  "name": "awesome-slider",
+  "version": "0.0.1-alpha.0",
+  "description": "a vanilla javascript slider/carousel/swiper plugin",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "Jesse",
+  "license": "MIT",
+  "keywords": [
+    "slider",
+    "carousel",
+    "swiper"
+  ]
+}
