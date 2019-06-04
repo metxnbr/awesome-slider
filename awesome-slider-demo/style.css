@@ -3,11 +3,17 @@ ul,li {
   margin: 0;
   list-style: none;
 }
-.container {
+
+.container-wrap {
   width: 450px;
   height: 1000px;
   margin: 0 auto;
   background-color: #ddd;
+}
+
+.container {
+  width: 450px;
+  margin-bottom: 30px;
 }
 
 .list {

@@ -59,7 +59,7 @@ function AwesomeSlider(images, container, options) {
     }
   }
 
-  this.images = images;
+  this.images = images.slice();
   this.realLen = this.images.length;
   this.len = this.realLen; // 后面要重新赋值
   this.current = 0;
