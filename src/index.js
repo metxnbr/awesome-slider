@@ -1,6 +1,6 @@
 function animate({ timing, draw, duration }) {
-  var start = performance.now();
-  
+  var start = window && window.performance && window.performance.now();
+
   requestAnimationFrame(function animate(time) {
     // timeFraction goes from 0 to 1
     if (!start) start = time;
@@ -137,12 +137,20 @@ AwesomeSlider.prototype.indicatorActive = function() {
   });
 };
 
+AwesomeSlider.prototype.move = function(n) {
+  this.eleCollections.list.style.left =
+    "-" + n * this.eleCollections.listWrap.clientWidth + "px";
+};
+
+AwesomeSlider.prototype.getMoveLeft = function() {
+  return this.current * this.eleCollections.listWrap.clientWidth;
+};
+
 AwesomeSlider.prototype.play = function(direction) {
   var context = this;
 
   direction = direction ? direction : "next";
 
-  var list = this.eleCollections.list;
   var cur = this.current;
 
   // change
@@ -185,8 +193,7 @@ AwesomeSlider.prototype.play = function(direction) {
         var left = cur - p;
       }
 
-      left = parseInt(left * 100);
-      list.style.left = "-" + left + "%";
+      context.move.call(context, left);
     },
     duration: this.options.duration
   });
@@ -248,53 +255,132 @@ AwesomeSlider.prototype.resumeAutoplay = function() {
   }
 };
 
+AwesomeSlider.prototype.events = [];
+
+AwesomeSlider.prototype.unmount = function() {
+  this.events.forEach(function(item) {
+    var element = item.element;
+    var event = item.event;
+    var fn = item.fn;
+    element.removeEventListener(event, fn, false);
+  });
+};
+
 AwesomeSlider.prototype.createListWrap = function() {
   var context = this;
 
   var ele = document.createElement("div");
+  this.eleCollections.listWrap = ele;
 
   ele.style.position = "relative";
   ele.style.overflow = "hidden";
   ele.style.height = this.height + "px";
 
   if (this.options.autoplay && this.checkPlayIsDisabled()) {
-    ele.addEventListener(
-      "mouseover",
-      function() {
-        context.stopAutoplay();
-      },
-      false
-    );
+    var start = undefined;
+    var curLeft = undefined;
+    var distance = undefined;
+    var limit = 80;
 
-    ele.addEventListener(
-      "touchstart",
-      function() {
-        context.stopAutoplay();
-      },
-      false
-    );
+    function mouseUpOrOut() {
+      if (start) {
+        if (distance > limit) {
+          context.play();
+        } else {
+          context.eleCollections.list.style.left = "-" + curLeft + "px";
+        }
 
-    document.body.addEventListener(
-      "touchend",
-      function() {
-        console.log('end');
-        context.resumeAutoplay();
-      },
-      false
-    );
+        if (distance < -limit) {
+          context.play("previous");
+        } else {
+          context.eleCollections.list.style.left = "-" + curLeft + "px";
+        }
+      }
+      start = undefined;
+    }
 
-    ele.addEventListener(
-      "mouseout",
-      function() {
-        context.resumeAutoplay();
+    function move(n) {
+      if (start) {
+        distance = start - n;
+        context.eleCollections.list.style.left =
+          "-" + (curLeft + distance) + "px";
+      }
+    }
+
+    this.events = [
+      {
+        element: ele,
+        event: "mouseover",
+        fn: function() {
+          context.stopAutoplay();
+        }
       },
-      false
-    );
+      {
+        element: ele,
+        event: "mousedown",
+        fn: function(e) {
+          e.preventDefault();
+          start = e.clientX;
+          curLeft = context.getMoveLeft();
+        }
+      },
+      {
+        element: document.body,
+        event: "mouseup",
+        fn: function() {
+          mouseUpOrOut();
+        }
+      },
+      {
+        element: ele,
+        event: "mousemove",
+        fn: function(e) {
+          move(e.clientX);
+        }
+      },
+      {
+        element: ele,
+        event: "mouseout",
+        fn: function() {
+          context.resumeAutoplay();
+          mouseUpOrOut();
+        }
+      },
+      {
+        element: ele,
+        event: "touchstart",
+        fn: function(e) {
+          context.stopAutoplay();
+          start = e.touches[0].clientX;
+          curLeft = context.getMoveLeft();
+        }
+      },
+      {
+        element: ele,
+        event: "touchmove",
+        fn: function(e) {
+          move(e.touches[0].clientX);
+        }
+      },
+      {
+        element: document.body,
+        event: "touchend",
+        fn: function() {
+          context.resumeAutoplay();
+          mouseUpOrOut();
+        }
+      }
+    ];
+
+    this.events.forEach(function(item) {
+      var element = item.element;
+      var event = item.event;
+      var fn = item.fn;
+      element.addEventListener(event, fn, false);
+    });
   }
 
   this.container.appendChild(ele);
-
-  this.eleCollections.listWrap = ele;
 
   return ele;
 };
@@ -313,6 +399,12 @@ AwesomeSlider.prototype.mapItem = function() {
   var items = [];
   this.images.forEach(function(src) {
     var ele = context.eleHelper.create(context.options.eleConfig.item);
+    ele.style.position = "relative";
+    var layer = document.createElement("div");
+    layer.setAttribute(
+      "style",
+      "position: absolute; left: 0; right: 0; top: 0; bottom: 0; z-index: 2"
+    );
     var img = context.eleHelper.create({
       tag: "img",
       attr: {
@@ -321,6 +413,7 @@ AwesomeSlider.prototype.mapItem = function() {
     });
     img.style.width = "100%";
     img.style.height = "100%";
+    // ele.appendChild(layer);
     ele.appendChild(img);
     ele.style.width = (1 / context.len) * 100 + "%";
     items.push(ele);
