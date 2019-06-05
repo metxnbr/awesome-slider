@@ -5,28 +5,43 @@ function main() {
 
   var create = AwesomeSlider.prototype.eleHelper.create;
 
-  function appendContainer() {
+  function appendContainer(text) {
     var container = create({
       tag: "div",
       attr: { class: "container" }
     });
     root.appendChild(container);
+
+    if (text) {
+      var introduce = create({
+        tag: "div",
+        attr: { class: "introduce" }
+      });
+      var textNode = document.createTextNode(text);
+      introduce.appendChild(textNode);
+      container.appendChild(introduce);
+    }
     return container;
   }
 
   var fns = [
     function() {
-      var container = appendContainer();
+      var text = '默认的轮播'
+      var container = appendContainer(text);
       var awesomeSlider = new AwesomeSlider(imagesCommon, container);
     },
     function() {
-      var container = appendContainer();
+      var text = '仅一张图片, 没有轮播效果'
+      var container = appendContainer(text);
       var images = ["./assets/1.png"];
       var awesomeSlider = new AwesomeSlider(images, container);
     },
     function() {
-      var container = appendContainer();
-      var awesomeSlider = new AwesomeSlider(imagesCommon, container);
+      var text = '图片的宽高比设置'
+      var container = appendContainer(text);
+      var awesomeSlider = new AwesomeSlider(imagesCommon, container, {
+        ratio: 5 / 1
+      });
     }
   ];
 
