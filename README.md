@@ -2,7 +2,7 @@
 
 a vanilla javascript slider/carousel/swiper plugin.
 
-[Demo](https://metxnbr.github.io/doc/docs/awesome-slider-demo/) 🚀
+[Demo](https://metxnbr.github.io/awesome-slider/demo/) 🚀
 
 ## install
 
