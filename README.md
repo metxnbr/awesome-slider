@@ -51,6 +51,9 @@ options = {
     style: Function,
     active: Function,
   },
+  
+  // 初始显示第几张图片, 如 initIndex = 1, 即显示第2张
+  initIndex: Number,
 
   // 定义有效的className的子集class, 会替换插件中默认内置的部分的style样式
   className: {
