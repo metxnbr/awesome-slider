@@ -52,7 +52,7 @@ options = {
     active: Function,
   },
 
-  // 定义有效的className的子集class, 会替换默认的style样式
+  // 定义有效的className的子集class, 会替换插件中默认内置的部分的style样式
   className: {
     list: '',
     item: ''
