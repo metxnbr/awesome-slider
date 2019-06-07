@@ -26,21 +26,28 @@ function main() {
 
   var fns = [
     function() {
-      var text = '默认的轮播'
+      var text = "默认的轮播";
       var container = appendContainer(text);
       var awesomeSlider = new AwesomeSlider(imagesCommon, container);
     },
     function() {
-      var text = '仅一张图片, 没有轮播效果'
+      var text = "仅一张图片, 没有轮播效果";
       var container = appendContainer(text);
       var images = ["./assets/1.png"];
       var awesomeSlider = new AwesomeSlider(images, container);
     },
     function() {
-      var text = '图片的宽高比设置'
+      var text = "图片的宽高比设置";
       var container = appendContainer(text);
       var awesomeSlider = new AwesomeSlider(imagesCommon, container, {
         ratio: 5 / 1
+      });
+    },
+    function() {
+      var text = "自定义指示器";
+      var container = appendContainer(text);
+      var awesomeSlider = new AwesomeSlider(imagesCommon, container, {
+        indicator: indicator()
       });
     }
   ];
@@ -48,6 +55,26 @@ function main() {
   for (var i = 0; i < fns.length; i++) {
     fns[i]();
   }
+}
+
+function indicator() {
+  var text = "";
+  var wrap = null;
+  return {
+    style: function() {
+      text = "1 / " + this.realLen;
+      wrap = document.createElement("div");
+      wrap.className = "custom-indicator-wrap";
+      var textNode = document.createTextNode(text);
+      wrap.appendChild(textNode);
+      this.eleCollections.listWrap.appendChild(wrap);
+    },
+
+    active: function() {
+      text = this.current + " / " + this.realLen;
+      wrap.innerText = text;
+    }
+  };
 }
 
 function readyGo(func) {

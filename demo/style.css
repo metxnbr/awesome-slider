@@ -60,3 +60,15 @@ li {
   text-align: center;
   color: #333;
 }
+
+.custom-indicator-wrap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 15px;
+  text-align: center;
+  font-size: 14px;
+  z-index: 2;
+  color: #fff;
+  text-shadow: 1px 1px #333;
+}

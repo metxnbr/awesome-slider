@@ -2,7 +2,13 @@
 
 a vanilla javascript slider/carousel/swiper plugin.
 
-[Demo](https://metxnbr.github.io/awesome-slider/demo/) 🚀
+## Demo
+
+[Demo合集](https://metxnbr.github.io/awesome-slider/demo/) 🚀
+
+如果在框架中使用, 比如`react`, 需要在组件`unmount`时, 移除所有相关监听事件. 示例:
+
+ [awesome-slider in react](https://codesandbox.io/embed/reactawesomeslider-wtbjc)
 
 ## install
 
@@ -27,7 +33,25 @@ var slider = new Slider(images, container, [options]);
 ### options
 
 ```js
-options = {};
+options = {
+  // 宽高比
+  ratio: 5 / 1,
+
+  // 是否自动轮播
+  autoplay: Boolean,
+
+  // 轮播图切换的速度
+  duration: Number // ms
+
+  // 自动轮播的间隔
+  interval: Number, // ms
+
+  // 指示器 定义false或null, 无指示器显示
+  indicator: {
+    style: Function,
+    active: Function,
+  },
+};
 ```
 
 ## Note
