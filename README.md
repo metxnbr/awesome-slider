@@ -4,11 +4,11 @@ a vanilla javascript slider/carousel/swiper plugin.
 
 ## Demo
 
-[Demo合集](https://metxnbr.github.io/awesome-slider/demo/) 🚀
+[Demo 合集](https://metxnbr.github.io/awesome-slider/demo/) 🚀
 
 如果在框架中使用, 比如`react`, 需要在组件`unmount`时, 移除所有相关监听事件. 示例:
 
- [awesome-slider in react](https://codesandbox.io/embed/reactawesomeslider-wtbjc)
+[awesome-slider in react](https://codesandbox.io/embed/reactawesomeslider-wtbjc)
 
 ## install
 
@@ -51,6 +51,12 @@ options = {
     style: Function,
     active: Function,
   },
+
+  // 定义有效的className的子集class, 会替换默认的style样式
+  className: {
+    list: '',
+    item: ''
+  }
 };
 ```
 

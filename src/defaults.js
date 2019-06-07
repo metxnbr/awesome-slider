@@ -6,18 +6,8 @@ module.exports = {
   autoplay: true,
   interval: 1000 * 3, // ms
   indicator: indicator,
-  eleConfig: {
-    list: {
-      tag: "ul",
-      attr: {
-        class: "list"
-      }
-    },
-    item: {
-      tag: "li",
-      attr: {
-        class: "item"
-      }
-    }
+  className: {
+    list: '',
+    item: ''
   }
 };

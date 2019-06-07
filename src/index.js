@@ -301,7 +301,16 @@ AwesomeSlider.prototype.createListWrap = function() {
 };
 
 AwesomeSlider.prototype.createList = function() {
-  var ele = this.eleHelper.create(this.options.eleConfig.list);
+  var ele = document.createElement("div");
+  if (this.options.className && this.options.className.list) {
+    ele.className = this.options.className.list;
+  } else {
+    ele.style.position = "absolute";
+    ele.style.left = 0;
+    ele.style.top = 0;
+    ele.style.fontSize = 0;
+  }
+
   ele.style.width = this.len + "00%";
   ele.style.height = "100%";
 
@@ -313,13 +322,15 @@ AwesomeSlider.prototype.mapItem = function() {
   var context = this;
   var items = [];
   this.images.forEach(function(src) {
-    var ele = context.eleHelper.create(context.options.eleConfig.item);
-    ele.style.position = "relative";
-    var layer = document.createElement("div");
-    layer.setAttribute(
-      "style",
-      "position: absolute; left: 0; right: 0; top: 0; bottom: 0; z-index: 2"
-    );
+    var ele = document.createElement("div");
+
+    if (context.options.className && context.options.className.item) {
+      ele.className = context.options.className.item;
+    } else {
+      ele.style.display = "inline-block";
+      ele.style.height = "100%";
+    }
+
     var img = context.eleHelper.create({
       tag: "img",
       attr: {
@@ -328,7 +339,6 @@ AwesomeSlider.prototype.mapItem = function() {
     });
     img.style.width = "100%";
     img.style.height = "100%";
-    // ele.appendChild(layer);
     ele.appendChild(img);
     ele.style.width = (1 / context.len) * 100 + "%";
     items.push(ele);
