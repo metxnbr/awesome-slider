@@ -24,7 +24,7 @@ var slider = new Slider(images, container, [options]);
 
 ### images
 
-数组, 图片的 src
+`[String | Object]`
 
 ### container
 

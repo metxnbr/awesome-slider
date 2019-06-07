@@ -318,10 +318,50 @@ AwesomeSlider.prototype.createList = function() {
   this.eleCollections.list = ele;
 };
 
+AwesomeSlider.prototype.imgShort = function(img) {
+  var imgEle = this.eleHelper.create({
+    tag: "img",
+    attr: {
+      src: img
+    }
+  });
+  imgEle.style.width = "100%";
+  imgEle.style.height = "100%";
+
+  return imgEle;
+};
+
+AwesomeSlider.prototype.imgDetail = function(obj) {
+  var a = obj.a;
+  var img = obj.img;
+
+  var imgEle = this.eleHelper.create({
+    tag: "img",
+    attr: img
+  });
+
+  imgEle.style.width = "100%";
+  imgEle.style.height = "100%";
+
+  var aEle = null;
+  if (a) {
+    aEle = this.eleHelper.create({
+      tag: "a",
+      attr: a
+    });
+    aEle.style.width = "100%";
+    aEle.style.height = "100%";
+
+    aEle.appendChild(imgEle);
+  }
+
+  return aEle || imgEle;
+};
+
 AwesomeSlider.prototype.mapItem = function() {
   var context = this;
   var items = [];
-  this.images.forEach(function(src) {
+  this.images.forEach(function(img) {
     var ele = document.createElement("div");
 
     if (context.options.className && context.options.className.item) {
@@ -331,16 +371,18 @@ AwesomeSlider.prototype.mapItem = function() {
       ele.style.height = "100%";
     }
 
-    var img = context.eleHelper.create({
-      tag: "img",
-      attr: {
-        src
-      }
-    });
-    img.style.width = "100%";
-    img.style.height = "100%";
-    ele.appendChild(img);
+    var imgEle = null;
+
+    if (typeof img === "string") {
+      imgEle = context.imgShort(img);
+    } else {
+      imgEle = context.imgDetail(img);
+    }
+
+    ele.appendChild(imgEle);
+
     ele.style.width = (1 / context.len) * 100 + "%";
+
     items.push(ele);
   });
 

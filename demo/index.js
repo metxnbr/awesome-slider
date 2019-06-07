@@ -31,6 +31,39 @@ function main() {
       var awesomeSlider = new AwesomeSlider(imagesCommon, container);
     },
     function() {
+      var text = "轮播中有链接跳转(1,2)或事件(3)";
+      var container = appendContainer(text);
+      var images = [
+        {
+          a: {
+            href: "https://metxnbr.github.io/awesome-slider/demo/assets/1.png",
+            target: "_blank"
+          },
+          img: {
+            src: "./assets/1.png"
+          }
+        },
+        {
+          a: {
+            href: "https://metxnbr.github.io/awesome-slider/demo/assets/2.png",
+            target: "_blank"
+          },
+          img: {
+            src: "./assets/2.png"
+          }
+        },
+        {
+          img: {
+            src: "./assets/3.png"
+          },
+          a: {
+            href: ""
+          }
+        }
+      ];
+      var awesomeSlider = new AwesomeSlider(images, container);
+    },
+    function() {
       var text = "仅一张图片, 没有轮播效果";
       var container = appendContainer(text);
       var images = ["./assets/1.png"];
