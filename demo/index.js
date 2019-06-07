@@ -39,7 +39,7 @@ function main() {
           attrs: {
             href: "https://metxnbr.github.io/awesome-slider/demo/assets/1.png",
             style: "width:100%; height: 100%",
-            target: '_blank'
+            target: "_blank"
           },
           children: [
             {
@@ -56,7 +56,7 @@ function main() {
           attrs: {
             href: "https://metxnbr.github.io/awesome-slider/demo/assets/2.png",
             style: "width:100%; height: 100%",
-            target: '_blank'
+            target: "_blank"
           },
           children: [
             {
@@ -73,7 +73,7 @@ function main() {
           attrs: {
             href: "https://metxnbr.github.io/awesome-slider/demo/assets/3.png",
             style: "width:100%; height: 100%",
-            target: '_blank'
+            target: "_blank"
           },
           children: [
             {
@@ -107,6 +107,14 @@ function main() {
       var awesomeSlider = new AwesomeSlider(imagesCommon, container, {
         indicator: indicator()
       });
+    },
+    function() {
+      var text = "初始展示第2张,同时也关闭了自动轮播";
+      var container = appendContainer(text);
+      var awesomeSlider = new AwesomeSlider(imagesCommon, container, {
+        initIndex: 1,
+        autoplay: false
+      });
     }
   ];
 
@@ -120,7 +128,7 @@ function indicator() {
   var wrap = null;
   return {
     style: function() {
-      text = "1 / " + this.realLen;
+      text = this.options.initIndex + 1 + " / " + this.realLen;
       wrap = document.createElement("div");
       wrap.className = "custom-indicator-wrap";
       var textNode = document.createTextNode(text);

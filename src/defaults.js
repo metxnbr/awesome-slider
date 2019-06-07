@@ -6,6 +6,7 @@ module.exports = {
   autoplay: true,
   interval: 1000 * 3, // ms
   indicator: indicator,
+  initIndex: 0,
   className: {
     list: '',
     item: ''

@@ -14,7 +14,7 @@ function AwesomeSlider(images, container, options) {
   this.images = images.slice();
   this.realLen = this.images.length;
   this.len = this.realLen; // 后面要重新赋值
-  this.current = 0;
+  this.current = this.options.initIndex;
   this.container = container;
   this.height = this.container.clientWidth / this.options.ratio;
 
@@ -143,7 +143,7 @@ AwesomeSlider.prototype.init = function() {
 
   if (this.checkPlayIsDisabled()) {
     this.current += 1;
-    this.eleCollections.list.style.left = "-100%";
+    this.eleCollections.list.style.left = "-" + this.getMoveLeft() + "px";
     this.options.autoplay && this.autoplay();
   }
 };
@@ -156,7 +156,7 @@ AwesomeSlider.prototype.stopAutoplay = function() {
 };
 
 AwesomeSlider.prototype.resumeAutoplay = function() {
-  if (this.intervalId === undefined) {
+  if (this.intervalId === undefined && this.options.autoplay) {
     this.autoplay();
   }
 };

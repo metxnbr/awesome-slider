@@ -21,7 +21,7 @@ function style() {
   var i = 0;
   while (i < this.realLen) {
     var item = document.createElement("div");
-    if (i === 0) {
+    if (i === this.options.initIndex) {
       item.setAttribute("style", options.itemActive);
     } else {
       item.setAttribute("style", options.item);
