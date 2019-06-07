@@ -19,7 +19,7 @@ a vanilla javascript slider/carousel/swiper plugin.
 ### overview
 
 ```js
-var slider = new Slider(images, container, [options]);
+var awesomeSlider = new AwesomeSlider(images, container, [options]);
 ```
 
 ### images
