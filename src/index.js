@@ -332,30 +332,24 @@ AwesomeSlider.prototype.imgShort = function(img) {
 };
 
 AwesomeSlider.prototype.imgDetail = function(obj) {
-  var a = obj.a;
-  var img = obj.img;
+  var context = this;
 
-  var imgEle = this.eleHelper.create({
-    tag: "img",
-    attr: img
-  });
+  var tagName = obj.tagName;
+  var attrs = obj.attrs;
+  var children = obj.children;
 
-  imgEle.style.width = "100%";
-  imgEle.style.height = "100%";
-
-  var aEle = null;
-  if (a) {
-    aEle = this.eleHelper.create({
-      tag: "a",
-      attr: a
-    });
-    aEle.style.width = "100%";
-    aEle.style.height = "100%";
-
-    aEle.appendChild(imgEle);
+  var ele = document.createElement(tagName);
+  for (var prop in attrs) {
+    ele.setAttribute(prop, attrs[prop]);
   }
 
-  return aEle || imgEle;
+  if (children) {
+    children.forEach(function(item) {
+      ele.appendChild(context.imgDetail(item));
+    });
+  }
+
+  return ele;
 };
 
 AwesomeSlider.prototype.mapItem = function() {

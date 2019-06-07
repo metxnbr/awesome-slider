@@ -31,34 +31,59 @@ function main() {
       var awesomeSlider = new AwesomeSlider(imagesCommon, container);
     },
     function() {
-      var text = "轮播中有链接跳转(1,2)或事件(3)";
+      var text = "轮播中点击有链接跳转";
       var container = appendContainer(text);
       var images = [
         {
-          a: {
+          tagName: "a",
+          attrs: {
             href: "https://metxnbr.github.io/awesome-slider/demo/assets/1.png",
-            target: "_blank"
+            style: "width:100%; height: 100%",
+            target: '_blank'
           },
-          img: {
-            src: "./assets/1.png"
-          }
+          children: [
+            {
+              tagName: "img",
+              attrs: {
+                src: "./assets/1.png",
+                style: "width:100%; height: 100%"
+              }
+            }
+          ]
         },
         {
-          a: {
+          tagName: "a",
+          attrs: {
             href: "https://metxnbr.github.io/awesome-slider/demo/assets/2.png",
-            target: "_blank"
+            style: "width:100%; height: 100%",
+            target: '_blank'
           },
-          img: {
-            src: "./assets/2.png"
-          }
+          children: [
+            {
+              tagName: "img",
+              attrs: {
+                src: "./assets/2.png",
+                style: "width:100%; height: 100%"
+              }
+            }
+          ]
         },
         {
-          img: {
-            src: "./assets/3.png"
+          tagName: "a",
+          attrs: {
+            href: "https://metxnbr.github.io/awesome-slider/demo/assets/3.png",
+            style: "width:100%; height: 100%",
+            target: '_blank'
           },
-          a: {
-            href: ""
-          }
+          children: [
+            {
+              tagName: "img",
+              attrs: {
+                src: "./assets/3.png",
+                style: "width:100%; height: 100%"
+              }
+            }
+          ]
         }
       ];
       var awesomeSlider = new AwesomeSlider(images, container);
