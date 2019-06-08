@@ -6,7 +6,7 @@ module.exports = {
   output: {
     library: "AwesomeSlider",
     libraryTarget: 'umd',
-    filename: "[name].js",
+    filename: "[name].dev.js",
     path: __dirname + "/dist"
   },
 };
