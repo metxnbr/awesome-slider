@@ -3,20 +3,15 @@ function main() {
 
   var root = document.getElementById("root");
 
-  var create = AwesomeSlider.prototype.eleHelper.create;
-
   function appendContainer(text) {
-    var container = create({
-      tag: "div",
-      attr: { class: "container" }
-    });
+    var container = document.createElement("div");
+    container.className = "container";
+
     root.appendChild(container);
 
     if (text) {
-      var introduce = create({
-        tag: "div",
-        attr: { class: "introduce" }
-      });
+      var introduce = document.createElement("div");
+      introduce.className = "introduce";
       var textNode = document.createTextNode(text);
       introduce.appendChild(textNode);
       container.appendChild(introduce);

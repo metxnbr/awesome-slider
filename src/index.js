@@ -1,6 +1,5 @@
 var animate = require("./animate");
 var defaults = require("./defaults");
-var Ele = require("./ele");
 
 function AwesomeSlider(images, container, options) {
   // extend options
@@ -26,8 +25,6 @@ function AwesomeSlider(images, container, options) {
 
   this.init();
 }
-
-AwesomeSlider.prototype.eleHelper = new Ele();
 
 AwesomeSlider.prototype.animateHelper = animate;
 
@@ -358,16 +355,12 @@ AwesomeSlider.prototype.createList = function() {
 };
 
 AwesomeSlider.prototype.imgShort = function(img) {
-  var imgEle = this.eleHelper.create({
-    tag: "img",
-    attr: {
-      src: img
-    }
-  });
-  imgEle.style.width = "100%";
-  imgEle.style.height = "100%";
+  var ele = document.createElement('img');
+  ele.setAttribute('src', img)
+  ele.style.width = "100%";
+  ele.style.height = "100%";
 
-  return imgEle;
+  return ele;
 };
 
 AwesomeSlider.prototype.imgDetail = function(obj) {
