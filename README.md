@@ -51,7 +51,7 @@ options = {
     style: Function,
     active: Function,
   },
-  
+
   // 初始显示第几张图片, 如 initIndex = 1, 即显示第2张
   initIndex: Number,
 
@@ -60,6 +60,11 @@ options = {
     previous: previous,
     next: next
   },
+  // 轮播动画的特效
+  timing: Function | String,
+
+  // 窗口变化时, 修正轮播图位置, 默认关闭
+  enableResize: Boolean,
 
   // 定义有效的className的子集class, 会替换插件中默认内置的部分的style样式
   className: {

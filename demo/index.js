@@ -115,7 +115,8 @@ function main() {
       var container = appendContainer(text);
       var awesomeSlider = new AwesomeSlider(imagesCommon, container, {
         initIndex: 1,
-        autoplay: false
+        autoplay: false,
+        enableResize: true
       });
     },
     function() {

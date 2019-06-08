@@ -144,7 +144,12 @@ AwesomeSlider.prototype.init = function() {
 
   if (this.checkPlayIsDisabled()) {
     this.createManual();
-    this.resize();
+
+    // resize
+    if (this.options.enableResize) {
+      this.resize();
+    }
+
     this.current += 1;
     this.eleCollections.list.style.left = "-" + this.getMoveLeft() + "px";
     this.options.autoplay && this.autoplay();

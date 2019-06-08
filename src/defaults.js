@@ -9,6 +9,7 @@ module.exports = {
   initIndex: 0,
   manual: null,
   timing: "linear",
+  enableResize: false,
   className: {
     list: "",
     item: ""
