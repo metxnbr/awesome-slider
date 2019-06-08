@@ -142,6 +142,7 @@ AwesomeSlider.prototype.init = function() {
   this.options.indicator && this.options.indicator.style.call(this);
 
   if (this.checkPlayIsDisabled()) {
+    this.createManual();
     this.current += 1;
     this.eleCollections.list.style.left = "-" + this.getMoveLeft() + "px";
     this.options.autoplay && this.autoplay();
@@ -177,6 +178,44 @@ AwesomeSlider.prototype.unmount = function() {
     element.removeEventListener(event, fn, false);
   });
   this.events = [];
+};
+
+AwesomeSlider.prototype.createManual = function() {
+  if (!this.options.manual) return;
+
+  var context = this;
+
+  var previous = this.options.manual.previous;
+  var next = this.options.manual.next;
+
+  var eventsArr = [
+    {
+      element: previous,
+      event: "click",
+      fn: function() {
+        context.play("previous");
+      }
+    },
+    {
+      element: next,
+      event: "click",
+      fn: function() {
+        context.play("next");
+      }
+    }
+  ];
+
+  this.addEvent(eventsArr);
+
+  eventsArr.forEach(function(item) {
+    var element = item.element;
+    var event = item.event;
+    var fn = item.fn;
+    element.addEventListener(event, fn, false);
+  });
+
+  this.eleCollections.listWrap.appendChild(previous);
+  this.eleCollections.listWrap.appendChild(next);
 };
 
 AwesomeSlider.prototype.createListWrap = function() {

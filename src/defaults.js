@@ -7,8 +7,9 @@ module.exports = {
   interval: 1000 * 3, // ms
   indicator: indicator,
   initIndex: 0,
+  manual: null,
   className: {
-    list: '',
-    item: ''
+    list: "",
+    item: ""
   }
 };

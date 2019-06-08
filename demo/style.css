@@ -49,3 +49,23 @@ body {
   color: #fff;
   text-shadow: 1px 1px #333;
 }
+
+.manual-btn {
+  position: absolute;
+  top: 50%;
+  width: 36px;
+  height: 60px;
+  margin-top: -30px;
+  background-color: #000;
+  opacity: 0.2;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.manual-btn.manual-previous {
+  left: 0;
+}
+
+.manual-btn.manual-next {
+  right: 0;
+}
