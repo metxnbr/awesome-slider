@@ -114,7 +114,7 @@ eval("module.exports = function(options) {\r\n  var timing = options.timing;\r\n
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("function debounce(func, wait) {\r\n  var timeout;\r\n  return function() {\r\n    var argus = arguments;\r\n    const context = this;\r\n    clearTimeout(timeout);\r\n    timeout = setTimeout(() => func.apply(context, argus), wait);\r\n  };\r\n}\r\n\r\nmodule.exports = debounce;\r\n\n\n//# sourceURL=webpack://AwesomeSlider/./src/debounce.js?");
+eval("function debounce(func, wait) {\r\n  var timeout;\r\n  return function() {\r\n    var argus = arguments;\r\n    var context = this;\r\n    clearTimeout(timeout);\r\n    timeout = setTimeout(() => func.apply(context, argus), wait);\r\n  };\r\n}\r\n\r\nmodule.exports = debounce;\r\n\n\n//# sourceURL=webpack://AwesomeSlider/./src/debounce.js?");
 
 /***/ }),
 
@@ -125,7 +125,7 @@ eval("function debounce(func, wait) {\r\n  var timeout;\r\n  return function() {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("var indicator = __webpack_require__(/*! ./indicator */ \"./src/indicator.js\");\r\n\r\nmodule.exports = {\r\n  ratio: 1180 / 500,\r\n  duration: 1000 * 0.3, // ms\r\n  autoplay: true,\r\n  interval: 1000 * 3, // ms\r\n  indicator: indicator,\r\n  initIndex: 0,\r\n  manual: null,\r\n  className: {\r\n    list: \"\",\r\n    item: \"\"\r\n  }\r\n};\r\n\n\n//# sourceURL=webpack://AwesomeSlider/./src/defaults.js?");
+eval("var indicator = __webpack_require__(/*! ./indicator */ \"./src/indicator.js\");\r\n\r\nmodule.exports = {\r\n  ratio: 1180 / 500,\r\n  duration: 1000 * 0.3, // ms\r\n  autoplay: true,\r\n  interval: 1000 * 5, // ms\r\n  indicator: indicator,\r\n  initIndex: 0,\r\n  manual: null,\r\n  className: {\r\n    list: \"\",\r\n    item: \"\"\r\n  }\r\n};\r\n\n\n//# sourceURL=webpack://AwesomeSlider/./src/defaults.js?");
 
 /***/ }),
 
