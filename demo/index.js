@@ -117,6 +117,14 @@ function main() {
         initIndex: 1,
         autoplay: false
       });
+    },
+    function() {
+      var text = "尝试下不一样的轮播切换效果";
+      var container = appendContainer(text);
+      var awesomeSlider = new AwesomeSlider(imagesCommon, container, {
+        duration: 1000 * 1,
+        timing: "easeOutCubic"
+      });
     }
   ];
 

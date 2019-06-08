@@ -1,5 +1,6 @@
 var animate = require("./animate");
 var debounce = require("./debounce");
+var easing = require("./easing");
 var defaults = require("./defaults");
 
 function AwesomeSlider(images, container, options) {
@@ -82,10 +83,12 @@ AwesomeSlider.prototype.play = function(direction) {
   // indicator active
   this.options.indicator && this.options.indicator.active.call(this);
 
+  var timing = this.options.timing;
+  if (typeof timing === "string") {
+    timing = easing[this.options.timing] || easing.linear;
+  }
   this.animateHelper({
-    timing: function(n) {
-      return n;
-    },
+    timing: timing,
     draw: function(p) {
       var left = cur;
 
