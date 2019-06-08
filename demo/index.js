@@ -97,7 +97,6 @@ function main() {
     function() {
       var text = "自定义手动切换轮播的按钮组件";
       var container = appendContainer(text);
-      var images = ["./assets/1.png"];
       var awesomeSlider = new AwesomeSlider(imagesCommon, container, {
         manual: manual()
       });
