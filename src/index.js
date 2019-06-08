@@ -100,7 +100,7 @@ AwesomeSlider.prototype.play = function(direction) {
         var left = cur - p;
       }
 
-      context.move.call(context, left);
+      context.move(left);
     },
     duration: this.options.duration
   });
@@ -161,7 +161,7 @@ AwesomeSlider.prototype.resize = function() {
 
   var fn = debounce(function() {
     console.log("resize");
-    context.move.call(context, context.current);
+    context.move(context.current);
   }, 1000 * 0.5);
 
   var event = {
