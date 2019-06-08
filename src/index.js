@@ -259,7 +259,7 @@ AwesomeSlider.prototype.createListWrap = function() {
   if (this.checkPlayIsDisabled()) {
     var start = undefined;
     var curLeft = undefined;
-    var distance = undefined;
+    var distance = 0;
     var limit = 80;
 
     function mouseUpOrOut() {
@@ -277,6 +277,7 @@ AwesomeSlider.prototype.createListWrap = function() {
         }
       }
       start = undefined;
+      distance = 0;
     }
 
     function move(n) {
