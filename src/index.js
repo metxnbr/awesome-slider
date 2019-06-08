@@ -1,4 +1,5 @@
 var animate = require("./animate");
+var debounce = require("./debounce");
 var defaults = require("./defaults");
 
 function AwesomeSlider(images, container, options) {
@@ -140,10 +141,29 @@ AwesomeSlider.prototype.init = function() {
 
   if (this.checkPlayIsDisabled()) {
     this.createManual();
+    this.resize();
     this.current += 1;
     this.eleCollections.list.style.left = "-" + this.getMoveLeft() + "px";
     this.options.autoplay && this.autoplay();
   }
+};
+
+AwesomeSlider.prototype.resize = function() {
+  var context = this;
+
+  var fn = debounce(function() {
+    console.log("resize");
+    context.move.call(context, context.current);
+  }, 1000 * 0.5);
+
+  var event = {
+    element: window,
+    event: "resize",
+    fn: fn
+  };
+
+  this.addEvent(event);
+  event.element.addEventListener(event.event, event.fn, false);
 };
 
 AwesomeSlider.prototype.stopAutoplay = function() {
@@ -161,6 +181,9 @@ AwesomeSlider.prototype.resumeAutoplay = function() {
 
 AwesomeSlider.prototype.events = [];
 
+/**
+ * add -> Array | Object
+ */
 AwesomeSlider.prototype.addEvent = function(add) {
   this.events = this.events.concat(add);
 };
@@ -355,8 +378,8 @@ AwesomeSlider.prototype.createList = function() {
 };
 
 AwesomeSlider.prototype.imgShort = function(img) {
-  var ele = document.createElement('img');
-  ele.setAttribute('src', img)
+  var ele = document.createElement("img");
+  ele.setAttribute("src", img);
   ele.style.width = "100%";
   ele.style.height = "100%";
 
