@@ -414,7 +414,6 @@ AwesomeSlider.prototype.downloadingImageProcess = function(image, src, index) {
     context.downloadingImageResult();
   };
   downloadingImage.onerror = function() {
-    image.src = this.src;
     context.imagesProcess[index] = "error";
     context.downloadingImageResult();
   };
