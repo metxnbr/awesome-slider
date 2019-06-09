@@ -66,6 +66,12 @@ options = {
   // 窗口变化时, 修正轮播图位置, 默认关闭
   enableResize: Boolean,
 
+  // 图片加载展示
+  imageDownloading: Object,
+
+  // 图片加载失败占位
+  imagePlaceholder: Object,
+
   // 定义有效的className的子集class, 会替换插件中默认内置的部分的style样式
   className: {
     list: '',

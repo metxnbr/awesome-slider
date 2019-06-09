@@ -1,6 +1,6 @@
 var options = {
   wrap:
-    "position: absolute;left: 0;right: 0;bottom: 15px;text-align: center;font-size: 0; z-index: 2;",
+    "position: absolute;left: 0;right: 0;bottom: 15px;text-align: center;font-size: 0; z-index: 4;",
   list: "display: inline-block;",
   item:
     "display: inline-block;width: 7px;height: 7px;margin: 0 5px;border-radius: 50%;background-color: #fff;opacity: 0.3;",

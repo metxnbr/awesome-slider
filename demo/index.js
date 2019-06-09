@@ -81,7 +81,10 @@ function main() {
           ]
         }
       ];
-      var awesomeSlider = new AwesomeSlider(images, container);
+      var awesomeSlider = new AwesomeSlider(images, container, {
+        imageDownloading: imageDownloading(),
+        imagePlaceholder: imagePlaceholder()
+      });
     },
     function() {
       var text = "仅一张图片, 没有轮播效果";
@@ -117,6 +120,15 @@ function main() {
         initIndex: 1,
         autoplay: false,
         enableResize: true
+      });
+    },
+    function() {
+      var text = "自定义轮播图片加载时的效果和加载失败时的占位";
+      var container = appendContainer(text);
+      var images = imagesCommon.concat("./assets/none.png");
+      var awesomeSlider = new AwesomeSlider(images, container, {
+        imageDownloading: imageDownloading(),
+        imagePlaceholder: imagePlaceholder(),
       });
     },
     function() {
@@ -165,6 +177,22 @@ function manual() {
     previous: previous,
     next: next
   };
+}
+
+function imageDownloading() {
+  var ele = document.createElement("div");
+  ele.className = "image-downloading";
+  var text = document.createTextNode("loading...");
+  ele.appendChild(text);
+  return ele;
+}
+
+function imagePlaceholder() {
+  var ele = document.createElement("div");
+  ele.className = "image-placeholder";
+  var text = document.createTextNode("error");
+  ele.appendChild(text);
+  return ele;
 }
 
 function readyGo(func) {

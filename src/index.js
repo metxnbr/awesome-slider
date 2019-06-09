@@ -21,6 +21,8 @@ function AwesomeSlider(images, container, options) {
 
   this.eleCollections = {};
 
+  this.imagesProcess = [];
+
   this.intervalId = undefined;
 
   this.removeAllEventListener = this.unmount; // alias
@@ -83,6 +85,9 @@ AwesomeSlider.prototype.play = function(direction) {
   // indicator active
   this.options.indicator && this.options.indicator.active.call(this);
 
+  // downloading image result
+  this.downloadingImageResult();
+
   var timing = this.options.timing;
   if (typeof timing === "string") {
     timing = easing[this.options.timing] || easing.linear;
@@ -141,6 +146,18 @@ AwesomeSlider.prototype.init = function() {
 
   // indicator style
   this.options.indicator && this.options.indicator.style.call(this);
+
+  // imageDownloading
+  if (this.options.imageDownloading) {
+    this.options.imageDownloading.style.display = "none";
+    this.eleCollections.listWrap.appendChild(this.options.imageDownloading);
+  }
+
+  // imagePlaceholder
+  if (this.options.imagePlaceholder) {
+    this.options.imagePlaceholder.style.display = "none";
+    this.eleCollections.listWrap.appendChild(this.options.imagePlaceholder);
+  }
 
   if (this.checkPlayIsDisabled()) {
     this.createManual();
@@ -386,40 +403,107 @@ AwesomeSlider.prototype.createList = function() {
   this.eleCollections.list = ele;
 };
 
-AwesomeSlider.prototype.imgShort = function(img) {
-  var ele = document.createElement("img");
-  ele.setAttribute("src", img);
-  ele.style.width = "100%";
-  ele.style.height = "100%";
+AwesomeSlider.prototype.downloadingImageProcess = function(image, src, index) {
+  this.imagesProcess[index] = "loading";
+  this.downloadingImageResult();
+  var context = this;
+  var downloadingImage = new Image();
+  downloadingImage.onload = function() {
+    image.src = this.src;
+    context.imagesProcess[index] = "success";
+    context.downloadingImageResult();
+  };
+  downloadingImage.onerror = function() {
+    image.src = this.src;
+    context.imagesProcess[index] = "error";
+    context.downloadingImageResult();
+  };
+  downloadingImage.src = src;
+};
 
-  return ele;
+AwesomeSlider.prototype.checkLoading = function() {};
+
+AwesomeSlider.prototype.downloadingImageResult = function() {
+  var cur = this.current;
+  var load = this.options.imageDownloading;
+  var placeholder = this.options.imagePlaceholder;
+  var imagesProcess = this.imagesProcess;
+  // ready loading success error
+
+  var p = imagesProcess[cur];
+
+  if (load) {
+    if (p === "loading") {
+      load.style.display = "block";
+    } else {
+      load.style.display = "none";
+    }
+  }
+
+  if (placeholder) {
+    if (p === "error") {
+      placeholder.style.display = "block";
+    } else {
+      placeholder.style.display = "none";
+    }
+  }
+};
+
+AwesomeSlider.prototype.imgShort = function(img) {
+  var context = this;
+
+  return function(index) {
+    var ele = document.createElement("img");
+    ele.style.width = "100%";
+    ele.style.height = "100%";
+
+    var load = context.options.imageDownloading;
+    var placeholder = context.options.imagePlaceholder;
+
+    if (load || placeholder) {
+      context.downloadingImageProcess(ele, img, index);
+    } else {
+      // 直接设置src
+      ele.setAttribute("src", img);
+    }
+
+    return ele;
+  };
 };
 
 AwesomeSlider.prototype.imgDetail = function(obj) {
   var context = this;
+  return function(index) {
+    var tagName = obj.tagName;
+    var attrs = obj.attrs;
+    var children = obj.children;
 
-  var tagName = obj.tagName;
-  var attrs = obj.attrs;
-  var children = obj.children;
+    var ele = document.createElement(tagName);
+    for (var prop in attrs) {
+      var load = context.options.imageDownloading;
+      var placeholder = context.options.imagePlaceholder;
 
-  var ele = document.createElement(tagName);
-  for (var prop in attrs) {
-    ele.setAttribute(prop, attrs[prop]);
-  }
+      if ((load || placeholder) && tagName === "img" && prop === "src") {
+        context.downloadingImageProcess(ele, attrs.src, index);
+      } else {
+        ele.setAttribute(prop, attrs[prop]);
+      }
+    }
 
-  if (children) {
-    children.forEach(function(item) {
-      ele.appendChild(context.imgDetail(item));
-    });
-  }
+    if (children) {
+      children.forEach(function(item) {
+        ele.appendChild(context.imgDetail(item)(index));
+      });
+    }
 
-  return ele;
+    return ele;
+  };
 };
 
 AwesomeSlider.prototype.mapItem = function() {
   var context = this;
   var items = [];
-  this.images.forEach(function(img) {
+  this.images.forEach(function(img, i) {
     var ele = document.createElement("div");
 
     if (context.options.className && context.options.className.item) {
@@ -432,9 +516,9 @@ AwesomeSlider.prototype.mapItem = function() {
     var imgEle = null;
 
     if (typeof img === "string") {
-      imgEle = context.imgShort(img);
+      imgEle = context.imgShort(img)(i);
     } else {
-      imgEle = context.imgDetail(img);
+      imgEle = context.imgDetail(img)(i);
     }
 
     ele.appendChild(imgEle);

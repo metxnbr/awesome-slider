@@ -10,6 +10,8 @@ module.exports = {
   manual: null,
   timing: "linear",
   enableResize: false,
+  imageDownloading: null,
+  imagePlaceholder: null,
   className: {
     list: "",
     item: ""

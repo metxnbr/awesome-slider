@@ -7,7 +7,7 @@ body {
   width: 100%;
   max-width: 450px;
   margin: 0 auto;
-  background-color: #ddd;
+  background-color: #eee;
   padding: 15px 0;
 }
 
@@ -45,9 +45,9 @@ body {
   bottom: 15px;
   text-align: center;
   font-size: 14px;
-  z-index: 2;
   color: #fff;
   text-shadow: 1px 1px #333;
+  z-index: 4;
 }
 
 .manual-btn {
@@ -68,4 +68,30 @@ body {
 
 .manual-btn.manual-next {
   right: 0;
+}
+
+.image-downloading {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  text-align: center;
+  color: #999;
+  background-color: #ddd;
+  z-index: 2;
+}
+
+.image-placeholder {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  text-align: center;
+  color: #fff;
+  background-color: red;
+  z-index: 2;
 }
