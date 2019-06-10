@@ -42,7 +42,7 @@ AwesomeSlider.prototype.smoothImages = function() {
   this.len = this.images.length;
 };
 
-AwesomeSlider.prototype.move = function(n) {
+AwesomeSlider.prototype.jupm = function(n) {
   this.eleCollections.list.style.left =
     "-" + n * this.eleCollections.listWrap.clientWidth + "px";
 };
@@ -51,7 +51,9 @@ AwesomeSlider.prototype.getMoveLeft = function() {
   return this.current * this.eleCollections.listWrap.clientWidth;
 };
 
-AwesomeSlider.prototype.play = function(direction) {
+AwesomeSlider.prototype.play = function(direction, distance) {
+  distance = distance ? distance : 0;
+
   var context = this;
 
   direction = direction ? direction : "next";
@@ -87,20 +89,23 @@ AwesomeSlider.prototype.play = function(direction) {
   if (typeof timing === "string") {
     timing = easing[this.options.timing] || easing.linear;
   }
+
+  var w = context.eleCollections.listWrap.clientWidth;
+
   this.animateHelper({
     timing: timing,
     draw: function(p) {
-      var left = cur;
+      var left = 0;
 
       if (direction === "next") {
-        var left = cur + p;
+        left = cur * w + distance + p * (w - distance);
       }
 
       if (direction === "previous") {
-        var left = cur - p;
+        left = cur * w + distance - p * (w + distance);
       }
 
-      context.move(left);
+      context.eleCollections.list.style.left = "-" + left + "px";
     },
     duration: this.options.duration
   });
@@ -161,7 +166,7 @@ AwesomeSlider.prototype.resize = function() {
 
   var fn = debounce(function() {
     console.log("resize");
-    context.move(context.current);
+    context.jupm(context.current);
   }, 1000 * 0.5);
 
   var event = {
@@ -265,13 +270,13 @@ AwesomeSlider.prototype.createListWrap = function() {
     function mouseUpOrOut() {
       if (start) {
         if (distance > limit) {
-          context.play();
+          context.play("next", distance);
         } else {
           context.eleCollections.list.style.left = "-" + curLeft + "px";
         }
 
         if (distance < -limit) {
-          context.play("previous");
+          context.play("previous", distance);
         } else {
           context.eleCollections.list.style.left = "-" + curLeft + "px";
         }
