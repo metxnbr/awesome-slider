@@ -472,16 +472,17 @@ AwesomeSlider.prototype.mapItem = function() {
 
     var downloading = null;
     var placeholder = null;
+    var lineHeight = context.height + "px";
     if (context.options.imageDownloading) {
       downloading = context.options.imageDownloading.cloneNode(true);
-      downloading.style.lineHeight = context.container.clientHeight + "px";
+      downloading.style.lineHeight = lineHeight;
       downloading.style.display = "block";
       ele.appendChild(downloading);
     }
 
     if (context.options.imagePlaceholder) {
       placeholder = context.options.imagePlaceholder.cloneNode(true);
-      placeholder.style.lineHeight = context.container.clientHeight + "px";
+      placeholder.style.lineHeight = lineHeight;
       placeholder.style.display = "none";
       ele.appendChild(placeholder);
     }
