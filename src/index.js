@@ -265,7 +265,7 @@ AwesomeSlider.prototype.createListWrap = function() {
     var start = undefined;
     var curLeft = undefined;
     var distance = 0;
-    var limit = 80;
+    var limit = 50;
 
     function mouseUpOrOut() {
       if (start) {
@@ -345,6 +345,7 @@ AwesomeSlider.prototype.createListWrap = function() {
         element: ele,
         event: "touchmove",
         fn: function(e) {
+          e.preventDefault();
           move(e.touches[0].clientX);
         }
       },
