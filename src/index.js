@@ -21,8 +21,6 @@ function AwesomeSlider(images, container, options) {
 
   this.eleCollections = {};
 
-  this.imagesProcess = [];
-
   this.intervalId = undefined;
 
   this.removeAllEventListener = this.unmount; // alias
@@ -85,9 +83,6 @@ AwesomeSlider.prototype.play = function(direction) {
   // indicator active
   this.options.indicator && this.options.indicator.active.call(this);
 
-  // downloading image result
-  this.downloadingImageResult();
-
   var timing = this.options.timing;
   if (typeof timing === "string") {
     timing = easing[this.options.timing] || easing.linear;
@@ -146,18 +141,6 @@ AwesomeSlider.prototype.init = function() {
 
   // indicator style
   this.options.indicator && this.options.indicator.style.call(this);
-
-  // imageDownloading
-  if (this.options.imageDownloading) {
-    this.options.imageDownloading.style.display = "none";
-    this.eleCollections.listWrap.appendChild(this.options.imageDownloading);
-  }
-
-  // imagePlaceholder
-  if (this.options.imagePlaceholder) {
-    this.options.imagePlaceholder.style.display = "none";
-    this.eleCollections.listWrap.appendChild(this.options.imagePlaceholder);
-  }
 
   if (this.checkPlayIsDisabled()) {
     this.createManual();
@@ -403,95 +386,66 @@ AwesomeSlider.prototype.createList = function() {
   this.eleCollections.list = ele;
 };
 
-AwesomeSlider.prototype.downloadingImageProcess = function(image, src, index) {
-  this.imagesProcess[index] = "loading";
-  this.downloadingImageResult();
+AwesomeSlider.prototype.downloadingImage = function(image, options) {
   var context = this;
-  var downloadingImage = new Image();
-  downloadingImage.onload = function() {
-    image.src = this.src;
-    context.imagesProcess[index] = "success";
-    context.downloadingImageResult();
-  };
-  downloadingImage.onerror = function() {
-    context.imagesProcess[index] = "error";
-    context.downloadingImageResult();
-  };
-  downloadingImage.src = src;
-};
+  var downloading = options.downloading;
+  var placeholder = options.placeholder;
 
-AwesomeSlider.prototype.checkLoading = function() {};
-
-AwesomeSlider.prototype.downloadingImageResult = function() {
-  var cur = this.current;
-  var load = this.options.imageDownloading;
-  var placeholder = this.options.imagePlaceholder;
-  var imagesProcess = this.imagesProcess;
-  // ready loading success error
-
-  var p = imagesProcess[cur];
-
-  if (load) {
-    if (p === "loading") {
-      load.style.display = "block";
-    } else {
-      load.style.display = "none";
+  function d(ele, event) {
+    if (ele) {
+      context.addEvent(event);
+      event.element.addEventListener(event.event, event.fn, false);
     }
   }
 
-  if (placeholder) {
-    if (p === "error") {
+  d(downloading, {
+    element: image,
+    event: "load",
+    fn: function() {
+      downloading.style.display = "none";
+    }
+  });
+
+  d(placeholder, {
+    element: image,
+    event: "error",
+    fn: function() {
+      downloading.style.display = "none";
       placeholder.style.display = "block";
-    } else {
-      placeholder.style.display = "none";
     }
-  }
+  });
 };
 
 AwesomeSlider.prototype.imgShort = function(img) {
   var context = this;
 
-  return function(index) {
+  return function(options) {
     var ele = document.createElement("img");
     ele.style.width = "100%";
     ele.style.height = "100%";
 
-    var load = context.options.imageDownloading;
-    var placeholder = context.options.imagePlaceholder;
-
-    if (load || placeholder) {
-      context.downloadingImageProcess(ele, img, index);
-    } else {
-      // 直接设置src
-      ele.setAttribute("src", img);
-    }
-
+    ele.setAttribute("src", img);
+    context.downloadingImage(ele, options);
     return ele;
   };
 };
 
 AwesomeSlider.prototype.imgDetail = function(obj) {
   var context = this;
-  return function(index) {
+
+  return function() {
     var tagName = obj.tagName;
     var attrs = obj.attrs;
     var children = obj.children;
 
     var ele = document.createElement(tagName);
     for (var prop in attrs) {
-      var load = context.options.imageDownloading;
-      var placeholder = context.options.imagePlaceholder;
-
-      if ((load || placeholder) && tagName === "img" && prop === "src") {
-        context.downloadingImageProcess(ele, attrs.src, index);
-      } else {
-        ele.setAttribute(prop, attrs[prop]);
-      }
+      ele.setAttribute(prop, attrs[prop]);
     }
 
     if (children) {
       children.forEach(function(item) {
-        ele.appendChild(context.imgDetail(item)(index));
+        ele.appendChild(context.imgDetail(item)());
       });
     }
 
@@ -502,7 +456,8 @@ AwesomeSlider.prototype.imgDetail = function(obj) {
 AwesomeSlider.prototype.mapItem = function() {
   var context = this;
   var items = [];
-  this.images.forEach(function(img, i) {
+
+  this.images.forEach(function(img) {
     var ele = document.createElement("div");
 
     if (context.options.className && context.options.className.item) {
@@ -512,17 +467,40 @@ AwesomeSlider.prototype.mapItem = function() {
       ele.style.height = "100%";
     }
 
+    ele.style.position = "relative";
+    ele.style.width = (1 / context.len) * 100 + "%";
+
+    var downloading = null;
+    var placeholder = null;
+    if (context.options.imageDownloading) {
+      downloading = context.options.imageDownloading.cloneNode(true);
+      downloading.style.lineHeight = context.container.clientHeight + "px";
+      downloading.style.display = "block";
+      ele.appendChild(downloading);
+    }
+
+    if (context.options.imagePlaceholder) {
+      placeholder = context.options.imagePlaceholder.cloneNode(true);
+      placeholder.style.lineHeight = context.container.clientHeight + "px";
+      placeholder.style.display = "none";
+      ele.appendChild(placeholder);
+    }
+
     var imgEle = null;
 
     if (typeof img === "string") {
-      imgEle = context.imgShort(img)(i);
+      imgEle = context.imgShort(img)({
+        downloading: downloading,
+        placeholder: placeholder
+      });
     } else {
-      imgEle = context.imgDetail(img)(i);
+      imgEle = context.imgDetail(img)({
+        downloading: downloading,
+        placeholder: placeholder
+      });
     }
 
     ele.appendChild(imgEle);
-
-    ele.style.width = (1 / context.len) * 100 + "%";
 
     items.push(ele);
   });

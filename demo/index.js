@@ -81,10 +81,7 @@ function main() {
           ]
         }
       ];
-      var awesomeSlider = new AwesomeSlider(images, container, {
-        imageDownloading: imageDownloading(),
-        imagePlaceholder: imagePlaceholder()
-      });
+      var awesomeSlider = new AwesomeSlider(images, container);
     },
     function() {
       var text = "仅一张图片, 没有轮播效果";
@@ -128,7 +125,7 @@ function main() {
       var images = imagesCommon.concat("./assets/none.png");
       var awesomeSlider = new AwesomeSlider(images, container, {
         imageDownloading: imageDownloading(),
-        imagePlaceholder: imagePlaceholder(),
+        imagePlaceholder: imagePlaceholder()
       });
     },
     function() {

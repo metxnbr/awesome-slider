@@ -76,10 +76,10 @@ body {
   right: 0;
   top: 0;
   bottom: 0;
-  height: 100%;
   text-align: center;
-  color: #999;
-  background-color: #ddd;
+  font-size: 14px;
+  color: #333;
+  background-color: pink;
   z-index: 2;
 }
 
@@ -91,6 +91,7 @@ body {
   bottom: 0;
   height: 100%;
   text-align: center;
+  font-size: 14px;
   color: #fff;
   background-color: red;
   z-index: 2;
