@@ -445,11 +445,6 @@ AwesomeSlider.prototype.imgDetail = function(obj) {
   var context = this;
 
   return function(options) {
-    if (typeof obj === "string") {
-      var text = document.createTextNode(obj);
-      return text;
-    }
-
     var tagName = obj.tagName;
     var attrs = obj.attrs;
     var children = obj.children;
@@ -468,7 +463,12 @@ AwesomeSlider.prototype.imgDetail = function(obj) {
 
     if (children) {
       children.forEach(function(item) {
-        ele.appendChild(context.imgDetail(item)(options));
+        if (typeof item === "string") {
+          var text = document.createTextNode(item);
+          ele.appendChild(text);
+        } else {
+          ele.appendChild(context.imgDetail(item)(options));
+        }
       });
     }
 
