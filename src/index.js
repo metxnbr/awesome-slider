@@ -208,6 +208,9 @@ AwesomeSlider.prototype.addEvent = function(add) {
 };
 
 AwesomeSlider.prototype.unmount = function() {
+  // clear task of autoplay 
+  this.stopAutoplay();
+
   if (!this.events || this.events.length === 0) return;
 
   this.events.forEach(function(item) {
