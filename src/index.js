@@ -345,7 +345,6 @@ AwesomeSlider.prototype.createListWrap = function() {
         element: ele,
         event: "touchmove",
         fn: function(e) {
-          e.preventDefault();
           move(e.touches[0].clientX);
         }
       },
