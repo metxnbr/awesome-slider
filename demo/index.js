@@ -26,23 +26,26 @@ function main() {
       var awesomeSlider = new AwesomeSlider(imagesCommon, container);
     },
     function() {
-      var text = "轮播中点击有链接跳转";
+      var text = "(1)不仅仅是图片, 可以自定义内容;(2)图片链接, 点击会跳转;(3)一张图片 (4)一张无法加载的图片";
       var container = appendContainer(text);
       var images = [
         {
-          tagName: "a",
+          tagName: "div",
           attrs: {
-            href: "https://metxnbr.github.io/awesome-slider/demo/assets/1.png",
-            style: "width:100%; height: 100%",
-            target: "_blank"
+            style:
+              "width:100%; height: 100%; background-color: pink; font-size: 32px; color: #fff;"
           },
           children: [
+            "It's not just picture",
             {
-              tagName: "img",
+              tagName: "div",
               attrs: {
-                src: "./assets/1.png",
-                style: "width:100%; height: 100%"
-              }
+                style:
+                  "width:100%; height: 100%; background-color: pink; font-size: 14px; color: #fff;"
+              },
+              children: [
+                "text text text text text text text text text text text text text"
+              ]
             }
           ]
         },
@@ -64,24 +67,25 @@ function main() {
           ]
         },
         {
-          tagName: "a",
+          tagName: "img",
           attrs: {
-            href: "https://metxnbr.github.io/awesome-slider/demo/assets/3.png",
-            style: "width:100%; height: 100%",
-            target: "_blank"
-          },
-          children: [
-            {
-              tagName: "img",
-              attrs: {
-                src: "./assets/3.png",
-                style: "width:100%; height: 100%"
-              }
-            }
-          ]
+            src: "./assets/3.png",
+            style: "width:100%; height: 100%"
+          }
+        },
+        {
+          tagName: "img",
+          attrs: {
+            src: "./assets/none.png",
+            style: "width:100%; height: 100%"
+          }
         }
       ];
-      var awesomeSlider = new AwesomeSlider(images, container);
+      var awesomeSlider = new AwesomeSlider(images, container, {
+        autoplay: false,
+        imageDownloading: imageDownloading(),
+        imagePlaceholder: imagePlaceholder()
+      });
     },
     function() {
       var text = "仅一张图片, 没有轮播效果";

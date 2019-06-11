@@ -394,8 +394,14 @@ AwesomeSlider.prototype.createList = function() {
 
 AwesomeSlider.prototype.downloadingImage = function(image, options) {
   var context = this;
-  var downloading = options.downloading;
-  var placeholder = options.placeholder;
+
+  var downloading = options && options.downloading;
+  var placeholder = options && options.placeholder;
+
+  if (downloading) {
+    // start loading
+    downloading.style.display = "block";
+  }
 
   function d(ele, event) {
     if (ele) {
@@ -439,7 +445,12 @@ AwesomeSlider.prototype.imgShort = function(img) {
 AwesomeSlider.prototype.imgDetail = function(obj) {
   var context = this;
 
-  return function() {
+  return function(options) {
+    if (typeof obj === "string") {
+      var text = document.createTextNode(obj);
+      return text;
+    }
+
     var tagName = obj.tagName;
     var attrs = obj.attrs;
     var children = obj.children;
@@ -449,9 +460,16 @@ AwesomeSlider.prototype.imgDetail = function(obj) {
       ele.setAttribute(prop, attrs[prop]);
     }
 
+    for (var prop in attrs) {
+      if (tagName === "img" && prop === "src") {
+        context.downloadingImage(ele, options);
+        break;
+      }
+    }
+
     if (children) {
       children.forEach(function(item) {
-        ele.appendChild(context.imgDetail(item)());
+        ele.appendChild(context.imgDetail(item)(options));
       });
     }
 
@@ -474,6 +492,7 @@ AwesomeSlider.prototype.mapItem = function() {
     }
 
     ele.style.position = "relative";
+    ele.style.verticalAlign = "middle";
     ele.style.width = (1 / context.len) * 100 + "%";
 
     var downloading = null;
@@ -482,7 +501,7 @@ AwesomeSlider.prototype.mapItem = function() {
     if (context.options.imageDownloading) {
       downloading = context.options.imageDownloading.cloneNode(true);
       downloading.style.lineHeight = lineHeight;
-      downloading.style.display = "block";
+      downloading.style.display = "none";
       ele.appendChild(downloading);
     }
 
