@@ -8,34 +8,41 @@ var options = {
     "display: inline-block;width: 7px;height: 7px;margin: 0 5px;border-radius: 50%;background-color: #fff;opacity: 0.8;"
 };
 
-function style() {
-  this.eleCollections.indicator = []
+function style(obj) {
+  var listWrap = obj.listWrap;
+  var realLen = obj.realLen;
+  var initIndex = obj.initIndex;
+
+  this.eleCollections.indicator = [];
   var wrap = document.createElement("div");
   wrap.setAttribute("style", options.wrap);
-  this.eleCollections.listWrap.appendChild(wrap);
 
   var list = document.createElement("div");
   list.setAttribute("style", options.list);
-  wrap.appendChild(list);
 
   var i = 0;
-  while (i < this.realLen) {
+  while (i < realLen) {
     var item = document.createElement("div");
-    if (i === this.options.initIndex) {
+    if (i === initIndex) {
       item.setAttribute("style", options.itemActive);
     } else {
       item.setAttribute("style", options.item);
     }
     list.appendChild(item);
-    this.eleCollections.indicator.push(item)
+    this.eleCollections.indicator.push(item);
     i += 1;
   }
+
+  wrap.appendChild(list);
+  
+  listWrap.appendChild(wrap);
 }
 
-function active() {
-  var context = this;
+function active(obj) {
+  var current = obj.current;
+
   this.eleCollections.indicator.forEach(function(item, i) {
-    if (i === context.current - 1) {
+    if (i === current - 1) {
       item.setAttribute("style", options.itemActive);
     } else {
       item.setAttribute("style", options.item);

@@ -83,7 +83,8 @@ AwesomeSlider.prototype.play = function(direction, distance) {
   }
 
   // indicator active
-  this.options.indicator && this.options.indicator.active.call(this);
+  this.options.indicator &&
+    this.options.indicator.active.call(this, { current: this.current });
 
   var timing = this.options.timing;
   if (typeof timing === "string") {
@@ -145,7 +146,12 @@ AwesomeSlider.prototype.init = function() {
   });
 
   // indicator style
-  this.options.indicator && this.options.indicator.style.call(this);
+  this.options.indicator &&
+    this.options.indicator.style.call(this, {
+      listWrap: this.eleCollections.listWrap,
+      realLen: this.realLen,
+      initIndex: this.options.initIndex
+    });
 
   if (this.checkPlayIsDisabled()) {
     this.createManual();
