@@ -1,4 +1,4 @@
-# awesome-slider
+# awesome-slider [![npm version](https://img.shields.io/npm/v/awesome-slider.svg?style=flat)](https://www.npmjs.com/package/awesome-slider) ![min](https://img.shields.io/bundlephobia/min/awesome-slider.svg) ![minzip](https://img.shields.io/bundlephobia/minzip/awesome-slider.svg) ![license](https://img.shields.io/npm/l/awesome-slider.svg)
 
 a vanilla javascript slider/carousel/swiper plugin.
 
