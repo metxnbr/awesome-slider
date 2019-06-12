@@ -24,19 +24,14 @@ var awesomeSlider = new AwesomeSlider(images, container, [options]);
 
 ### images
 
-- Type : `Array<String | object>`
+- Type : `Array<String | Object>`
 - Default: `undefined`
 - Usage
 
 可以是简单模式
 
 ```js
-[
-  "./images/.jpg",
-  "./images/2.jpg",
-  "./images/3.jpg",
-  "./images/4.jpg",
-]
+["./images/1.jpg", "./images/2.jpg", "./images/3.jpg", "./images/4.jpg"];
 ```
 
 也可以自由组合
@@ -69,6 +64,18 @@ var awesomeSlider = new AwesomeSlider(images, container, [options]);
 - Usage
 
 包裹 images 的 html 元素
+
+```js
+var container = document.querySelector(".container"); 👈
+
+// react
+...
+const containerRef = useRef(null);
+...
+const container = containerRef.current; 👈
+...
+<div className="container" ref={containerRef}>
+```
 
 ### options
 
@@ -115,20 +122,14 @@ var awesomeSlider = new AwesomeSlider(images, container, [options]);
 如果要使用`this`, 就不要使用箭头函数, 一般现有传递的参数够用
 
 ```js
-  const style = ({
-    listWrap,
-    realLen,
-    initIndex,
-  }) => {}
+const style = ({ listWrap, realLen, initIndex }) => {};
 
-  const style = ({
-    current
-  }) => {}
+const style = ({ current }) => {};
 
-  const indicator = {
-    style,
-    active
-  }
+const indicator = {
+  style,
+  active
+};
 ```
 
 #### `initIndex`
