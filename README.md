@@ -145,6 +145,8 @@ var awesomeSlider = new AwesomeSlider(images, container, [options]);
 - Default: `null`
 - Usage
 
+`js`创建`html`, 插入两部分, 分别是`previous`和`next`
+
 #### `timing`
 
 - Type : `String | Function`
@@ -169,11 +171,15 @@ var awesomeSlider = new AwesomeSlider(images, container, [options]);
 - Default: `null`
 - Usage
 
+`js`创建`html`, 插入图片加载的效果
+
 #### `imagePlaceholder`
 
 - Type : `Object`
 - Default: `null`
 - Usage
+
+`js`创建`html`, 插入图片加载失败的占位
 
 ## Note
 
