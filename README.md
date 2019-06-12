@@ -10,17 +10,31 @@ a vanilla javascript slider/carousel/swiper plugin.
 
 [awesome-slider in react](https://codesandbox.io/embed/reactawesomeslider-wtbjc)
 
-## install
+## installing
+
+Using yarn
 
 `yarn add awesome-slider`
 
-## usage
+Using npm
 
-### overview
+`npm install awesome-slider`
+
+Using cdn
+
+`<script src="https://unpkg.com/awesome-slider/dist/awesome-slider.min.js"></script>`
+
+## Example
 
 ```js
-var awesomeSlider = new AwesomeSlider(images, container, [options]);
+const AwesomeSlider = require("awesome-slider");
+// or
+import AwesomeSlider from "awesome-slider";
+
+const awesomeSlider = new AwesomeSlider(images, container, [options]);
 ```
+
+## API
 
 ### images
 
