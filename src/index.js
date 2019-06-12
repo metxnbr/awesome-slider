@@ -208,7 +208,7 @@ AwesomeSlider.prototype.addEvent = function(add) {
 };
 
 AwesomeSlider.prototype.unmount = function() {
-  // clear task of autoplay 
+  // clear task of autoplay
   this.stopAutoplay();
 
   if (!this.events || this.events.length === 0) return;
@@ -384,15 +384,11 @@ AwesomeSlider.prototype.createListWrap = function() {
 
 AwesomeSlider.prototype.createList = function() {
   var ele = document.createElement("div");
-  if (this.options.className && this.options.className.list) {
-    ele.className = this.options.className.list;
-  } else {
-    ele.style.position = "absolute";
-    ele.style.left = 0;
-    ele.style.top = 0;
-    ele.style.fontSize = 0;
-  }
 
+  ele.style.position = "absolute";
+  ele.style.left = 0;
+  ele.style.top = 0;
+  ele.style.fontSize = 0;
   ele.style.width = this.len + "00%";
   ele.style.height = "100%";
 
@@ -492,13 +488,8 @@ AwesomeSlider.prototype.mapItem = function() {
   this.images.forEach(function(img) {
     var ele = document.createElement("div");
 
-    if (context.options.className && context.options.className.item) {
-      ele.className = context.options.className.item;
-    } else {
-      ele.style.display = "inline-block";
-      ele.style.height = "100%";
-    }
-
+    ele.style.display = "inline-block";
+    ele.style.height = "100%";
     ele.style.position = "relative";
     ele.style.verticalAlign = "middle";
     ele.style.width = (1 / context.len) * 100 + "%";

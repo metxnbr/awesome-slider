@@ -11,9 +11,5 @@ module.exports = {
   timing: "linear",
   enableResize: false,
   imageDownloading: null,
-  imagePlaceholder: null,
-  className: {
-    list: "",
-    item: ""
-  }
+  imagePlaceholder: null
 };
