@@ -28,8 +28,6 @@ function AwesomeSlider(images, container, options) {
   this.init();
 }
 
-AwesomeSlider.prototype.animateHelper = animate;
-
 AwesomeSlider.prototype.smoothImages = function() {
   if (this.realLen <= 1) {
     return;
@@ -93,7 +91,7 @@ AwesomeSlider.prototype.play = function(direction, distance) {
 
   var w = context.eleCollections.listWrap.clientWidth;
 
-  this.animateHelper({
+  animate({
     timing: timing,
     draw: function(p) {
       var left = 0;
@@ -171,7 +169,6 @@ AwesomeSlider.prototype.resize = function() {
   var context = this;
 
   var fn = debounce(function() {
-    console.log("resize");
     context.jupm(context.current);
   }, 1000 * 0.5);
 
