@@ -83,6 +83,7 @@ AwesomeSlider.prototype.play = function(direction, distance) {
 
   // indicator active
   this.options.indicator &&
+    this.options.indicator.active &&
     this.options.indicator.active.call(this, { current: this.current });
 
   var timing = this.options.timing;
@@ -146,6 +147,7 @@ AwesomeSlider.prototype.init = function() {
 
   // indicator style
   this.options.indicator &&
+    this.options.indicator.style &&
     this.options.indicator.style.call(this, {
       listWrap: this.eleCollections.listWrap,
       realLen: this.realLen,
@@ -218,7 +220,7 @@ AwesomeSlider.prototype.unmount = function() {
   this.stopAutoplay();
 
   if (!this.events || this.events.length === 0) return;
-  
+
   this.events.forEach(function(item) {
     listenerManage(item, "removeEventListener");
   });

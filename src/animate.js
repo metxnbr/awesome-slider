@@ -3,7 +3,11 @@ module.exports = function(options) {
   var draw = options.draw;
   var duration = options.duration;
 
-  var start = window && window.performance && window.performance.now();
+  var start =
+    window &&
+    window.performance &&
+    window.performance.now &&
+    window.performance.now();
 
   requestAnimationFrame(function animate(time) {
     // timeFraction goes from 0 to 1
