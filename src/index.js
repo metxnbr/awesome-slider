@@ -1,4 +1,5 @@
 var animate = require("./animate");
+var listenerManage = require("./listenerManage");
 var debounce = require("./debounce");
 var easing = require("./easing");
 var defaults = require("./defaults");
@@ -173,13 +174,12 @@ AwesomeSlider.prototype.resize = function() {
   }, 1000 * 0.5);
 
   var event = {
-    element: window,
-    event: "resize",
-    fn: fn
+    target: window,
+    type: "resize",
+    listener: fn
   };
 
-  this.addEvent(event);
-  event.element.addEventListener(event.event, event.fn, false);
+  this.registerAddEventListener(event);
 };
 
 AwesomeSlider.prototype.stopAutoplay = function() {
@@ -200,8 +200,17 @@ AwesomeSlider.prototype.events = [];
 /**
  * add -> Array | Object
  */
-AwesomeSlider.prototype.addEvent = function(add) {
+AwesomeSlider.prototype.registerAddEventListener = function(add) {
+  // 先注册 register
   this.events = this.events.concat(add);
+
+  // 后绑定
+  var arrAdd =
+    Object.prototype.toString.call(add) === "[object Array]" ? add : [add];
+
+  arrAdd.forEach(function(item) {
+    listenerManage(item);
+  });
 };
 
 AwesomeSlider.prototype.unmount = function() {
@@ -209,13 +218,11 @@ AwesomeSlider.prototype.unmount = function() {
   this.stopAutoplay();
 
   if (!this.events || this.events.length === 0) return;
-
+  
   this.events.forEach(function(item) {
-    var element = item.element;
-    var event = item.event;
-    var fn = item.fn;
-    element.removeEventListener(event, fn, false);
+    listenerManage(item, "removeEventListener");
   });
+
   this.events = [];
 };
 
@@ -229,29 +236,22 @@ AwesomeSlider.prototype.createManual = function() {
 
   var eventsArr = [
     {
-      element: previous,
-      event: "click",
-      fn: function() {
+      target: previous,
+      type: "click",
+      listener: function() {
         context.play("previous");
       }
     },
     {
-      element: next,
-      event: "click",
-      fn: function() {
+      target: next,
+      type: "click",
+      listener: function() {
         context.play("next");
       }
     }
   ];
 
-  this.addEvent(eventsArr);
-
-  eventsArr.forEach(function(item) {
-    var element = item.element;
-    var event = item.event;
-    var fn = item.fn;
-    element.addEventListener(event, fn, false);
-  });
+  this.registerAddEventListener(eventsArr);
 
   this.eleCollections.listWrap.appendChild(previous);
   this.eleCollections.listWrap.appendChild(next);
@@ -301,77 +301,70 @@ AwesomeSlider.prototype.createListWrap = function() {
 
     var eventsArr = [
       {
-        element: ele,
-        event: "mouseover",
-        fn: function() {
+        target: ele,
+        type: "mouseover",
+        listener: function() {
           context.stopAutoplay();
         }
       },
       {
-        element: ele,
-        event: "mousedown",
-        fn: function(e) {
+        target: ele,
+        type: "mousedown",
+        listener: function(e) {
           e.preventDefault();
           start = e.clientX;
           curLeft = context.getMoveLeft();
         }
       },
       {
-        element: document.body,
-        event: "mouseup",
-        fn: function() {
+        target: document.body,
+        type: "mouseup",
+        listener: function() {
           mouseUpOrOut();
         }
       },
       {
-        element: ele,
-        event: "mousemove",
-        fn: function(e) {
+        target: ele,
+        type: "mousemove",
+        listener: function(e) {
           move(e.clientX);
         }
       },
       {
-        element: ele,
-        event: "mouseout",
-        fn: function() {
+        target: ele,
+        type: "mouseout",
+        listener: function() {
           context.resumeAutoplay();
           mouseUpOrOut();
         }
       },
       {
-        element: ele,
-        event: "touchstart",
-        fn: function(e) {
+        target: ele,
+        type: "touchstart",
+        listener: function(e) {
           context.stopAutoplay();
           start = e.touches[0].clientX;
           curLeft = context.getMoveLeft();
         }
       },
       {
-        element: ele,
-        event: "touchmove",
-        fn: function(e) {
+        target: ele,
+        type: "touchmove",
+        listener: function(e) {
           move(e.touches[0].clientX);
         }
       },
       {
-        element: document.body,
-        event: "touchend",
-        fn: function() {
+        target: document.body,
+        type: "touchend",
+        listener: function() {
           context.resumeAutoplay();
           mouseUpOrOut();
         }
       }
     ];
 
-    this.addEvent(eventsArr);
-
-    eventsArr.forEach(function(item) {
-      var element = item.element;
-      var event = item.event;
-      var fn = item.fn;
-      element.addEventListener(event, fn, false);
-    });
+    this.registerAddEventListener(eventsArr);
   }
 
   this.container.appendChild(ele);
@@ -406,23 +399,22 @@ AwesomeSlider.prototype.downloadingImage = function(image, options) {
 
   function d(ele, event) {
     if (ele) {
-      context.addEvent(event);
-      event.element.addEventListener(event.event, event.fn, false);
+      context.registerAddEventListener(event);
     }
   }
 
   d(downloading, {
-    element: image,
-    event: "load",
-    fn: function() {
+    target: image,
+    type: "load",
+    listener: function() {
       downloading.style.display = "none";
     }
   });
 
   d(placeholder, {
-    element: image,
-    event: "error",
-    fn: function() {
+    target: image,
+    type: "error",
+    listener: function() {
       downloading.style.display = "none";
       placeholder.style.display = "block";
     }
