@@ -459,9 +459,32 @@ AwesomeSlider.prototype.imgDetail = function(obj) {
   var context = this;
 
   return function(options) {
-    var render = element.render;
+    var tagName = obj.tagName;
+    var attrs = obj.attrs;
+    var children = obj.children;
 
-    var ele = render(obj);
+    var ele = document.createElement(tagName);
+    for (var prop in attrs) {
+      ele.setAttribute(prop, attrs[prop]);
+    }
+
+    for (var prop in attrs) {
+      if (tagName === "img" && prop === "src") {
+        context.downloadingImage(ele, options);
+        break;
+      }
+    }
+
+    if (children) {
+      children.forEach(function(item) {
+        if (typeof item === "string") {
+          var text = document.createTextNode(item);
+          ele.appendChild(text);
+        } else {
+          ele.appendChild(context.imgDetail(item)(options));
+        }
+      });
+    }
 
     return ele;
   };
