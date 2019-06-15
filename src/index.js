@@ -1,6 +1,8 @@
 var animate = require("./animate");
 var listenerManage = require("./listenerManage");
 var debounce = require("./debounce");
+var element = require("./element");
+var translate = require("./translate");
 var easing = require("./easing");
 var defaults = require("./defaults");
 
@@ -29,6 +31,18 @@ function AwesomeSlider(images, container, options) {
   this.init();
 }
 
+/**
+ * utils
+ * AwesomeSlider内置方法
+ * 不用实例直接使用, 不影响实例
+ */
+AwesomeSlider.prototype.utils = {
+  debounce: debounce,
+  element: element,
+  animate: animate,
+  translate: translate
+};
+
 AwesomeSlider.prototype.smoothImages = function() {
   if (this.realLen <= 1) {
     return;
@@ -41,7 +55,7 @@ AwesomeSlider.prototype.smoothImages = function() {
   this.len = this.images.length;
 };
 
-AwesomeSlider.prototype.jupm = function(n) {
+AwesomeSlider.prototype.jump = function(n) {
   this.eleCollections.list.style.left =
     "-" + n * this.eleCollections.listWrap.clientWidth + "px";
 };
@@ -50,14 +64,27 @@ AwesomeSlider.prototype.getMoveLeft = function() {
   return this.current * this.eleCollections.listWrap.clientWidth;
 };
 
-AwesomeSlider.prototype.play = function(direction, distance) {
-  distance = distance ? distance : 0;
+AwesomeSlider.prototype.translateTo = function(current, to) {
+  var timing = this.options.timing;
+  if (typeof timing === "string") {
+    timing = easing[this.options.timing] || easing.linear;
+  }
+  var transOpt = this.utils.translate({
+    timing: timing,
+    duration: this.options.duration
+  });
+  return transOpt(current, to);
+};
 
+AwesomeSlider.prototype.play = function(direction) {
   var context = this;
 
   direction = direction ? direction : "next";
 
-  var cur = this.current;
+  var currentGo = this.eleCollections.list.style.left;
+
+  currentGo = currentGo.replace(/px$/, "");
+  currentGo = Math.ceil(currentGo);
 
   // change
   if (direction === "next") {
@@ -68,17 +95,16 @@ AwesomeSlider.prototype.play = function(direction, distance) {
     this.current -= 1;
   }
 
+  var cur = this.current;
+  var to = -cur * this.eleCollections.listWrap.clientWidth;
+
   // reset
-  if (direction === "next") {
-    if (context.current > context.realLen) {
-      context.current = 1;
-    }
+  if (this.current > this.realLen) {
+    this.current = 1;
   }
 
-  if (direction === "previous") {
-    if (context.current < 1) {
-      context.current = context.realLen;
-    }
+  if (this.current < 1) {
+    this.current = this.realLen;
   }
 
   // indicator active
@@ -91,24 +117,10 @@ AwesomeSlider.prototype.play = function(direction, distance) {
     timing = easing[this.options.timing] || easing.linear;
   }
 
-  var w = context.eleCollections.listWrap.clientWidth;
+  var transRun = this.translateTo(currentGo, to);
 
-  animate({
-    timing: timing,
-    draw: function(p) {
-      var left = 0;
-
-      if (direction === "next") {
-        left = cur * w + distance + p * (w - distance);
-      }
-
-      if (direction === "previous") {
-        left = cur * w + distance - p * (w + distance);
-      }
-
-      context.eleCollections.list.style.left = "-" + left + "px";
-    },
-    duration: this.options.duration
+  transRun(function(x) {
+    context.eleCollections.list.style.left = x + "px";
   });
 };
 
@@ -172,7 +184,7 @@ AwesomeSlider.prototype.resize = function() {
   var context = this;
 
   var fn = debounce(function() {
-    context.jupm(context.current);
+    context.jump(context.current);
   }, 1000 * 0.5);
 
   var event = {
@@ -276,19 +288,25 @@ AwesomeSlider.prototype.createListWrap = function() {
     var limit = 50;
 
     function mouseUpOrOut() {
+      var goBack = false;
       if (start) {
         if (distance > limit) {
-          context.play("next", distance);
+          context.play("next");
         } else {
-          context.eleCollections.list.style.left = "-" + curLeft + "px";
+          goBack = true;
         }
 
         if (distance < -limit) {
-          context.play("previous", distance);
+          context.play("previous");
         } else {
+          goBack = true;
+        }
+
+        if (goBack) {
           context.eleCollections.list.style.left = "-" + curLeft + "px";
         }
       }
+
       start = undefined;
       distance = 0;
     }
@@ -441,32 +459,9 @@ AwesomeSlider.prototype.imgDetail = function(obj) {
   var context = this;
 
   return function(options) {
-    var tagName = obj.tagName;
-    var attrs = obj.attrs;
-    var children = obj.children;
+    var render = element.render;
 
-    var ele = document.createElement(tagName);
-    for (var prop in attrs) {
-      ele.setAttribute(prop, attrs[prop]);
-    }
-
-    for (var prop in attrs) {
-      if (tagName === "img" && prop === "src") {
-        context.downloadingImage(ele, options);
-        break;
-      }
-    }
-
-    if (children) {
-      children.forEach(function(item) {
-        if (typeof item === "string") {
-          var text = document.createTextNode(item);
-          ele.appendChild(text);
-        } else {
-          ele.appendChild(context.imgDetail(item)(options));
-        }
-      });
-    }
+    var ele = render(obj);
 
     return ele;
   };
