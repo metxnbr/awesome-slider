@@ -76,15 +76,12 @@ AwesomeSlider.prototype.translateTo = function(current, to) {
   return transOpt(current, to);
 };
 
-AwesomeSlider.prototype.play = function(direction) {
+AwesomeSlider.prototype.play = function(direction, distance) {
   var context = this;
 
   direction = direction ? direction : "next";
 
-  var currentGo = this.eleCollections.list.style.left;
-
-  currentGo = currentGo.replace(/px$/, "");
-  currentGo = Math.ceil(currentGo);
+  distance = distance ? distance : 0;
 
   // change
   if (direction === "next") {
@@ -94,9 +91,6 @@ AwesomeSlider.prototype.play = function(direction) {
   if (direction === "previous") {
     this.current -= 1;
   }
-
-  var cur = this.current;
-  var to = -cur * this.eleCollections.listWrap.clientWidth;
 
   // reset
   if (this.current > this.realLen) {
@@ -116,6 +110,12 @@ AwesomeSlider.prototype.play = function(direction) {
   if (typeof timing === "string") {
     timing = easing[this.options.timing] || easing.linear;
   }
+
+  var currentGo =
+    -this.eleCollections.listWrap.clientWidth *
+      (this.current - (direction === "next" ? 1 : -1)) -
+    distance;
+  var to = -this.current * this.eleCollections.listWrap.clientWidth;
 
   var transRun = this.translateTo(currentGo, to);
 
@@ -291,13 +291,13 @@ AwesomeSlider.prototype.createListWrap = function() {
       var goBack = false;
       if (start) {
         if (distance > limit) {
-          context.play("next");
+          context.play("next", distance);
         } else {
           goBack = true;
         }
 
         if (distance < -limit) {
-          context.play("previous");
+          context.play("previous", distance);
         } else {
           goBack = true;
         }
