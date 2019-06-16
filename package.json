@@ -1,6 +1,6 @@
 {
   "name": "awesome-slider",
-  "version": "1.2.0-alpha.3",
+  "version": "1.2.0",
   "description": "a vanilla javascript slider/carousel/swiper plugin",
   "main": "src/index.js",
   "repository": {

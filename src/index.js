@@ -34,7 +34,7 @@ function AwesomeSlider(images, container, options) {
 /**
  * utils
  * AwesomeSlider内置方法
- * 不用实例直接使用, 不影响实例
+ * 因为对自身不影响, 可以作为工具函数为外部所用
  */
 AwesomeSlider.prototype.utils = {
   debounce: debounce,

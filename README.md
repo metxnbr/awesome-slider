@@ -196,6 +196,15 @@ const indicator = {
 
 `js`创建`html`, 插入图片加载失败的占位
 
+## utils
+
+内置的几个方法, 因为对自身不影响, 可以作为工具函数为外部所用
+
+```js
+const AwesomeSlider = require("awesome-slider");
+const { element, debounce, animate, translate } = AwesomeSlider.prototype.utils;
+```
+
 ## Note
 
 使用了`requestAnimationFrame`, 如果要向低浏览器兼容, 可以自行引入`requestAnimationFrame polyfill` 比如`yarn add raf`

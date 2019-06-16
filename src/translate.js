@@ -11,7 +11,6 @@ module.exports = function(options) {
         timing: timing,
         draw: function(p) {
           var x = p * dis;
-          x = Math.ceil(x);
           run && run(current + x);
         },
         duration: duration
